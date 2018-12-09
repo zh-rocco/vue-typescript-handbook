@@ -1,0 +1,21 @@
+.DS_Store
+node_modules
+dist
+
+# log files
+*.log
+
+# Editor directories and files
+.idea
+.vscode
+.history
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+
+# lock files
+package-lock.json
+
+# vuepress
+.vuepress/dist

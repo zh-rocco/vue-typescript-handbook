@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+
+echo -e "\x1B[34mpre-commit is running ...\x1B[0m"
+
+source ./deploy.sh
