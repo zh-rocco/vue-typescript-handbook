@@ -2,8 +2,8 @@ const { name } = require("../../package.json");
 
 module.exports = {
   base: `/${name}/`,
-  title: "Vue Typescript Handbook",
-  description: "Let's develop vue app with typescript.",
+  title: "Vue TypeScript Handbook",
+  description: "使用 TypeScript 开发 Vue 应用。",
   themeConfig: {
     sidebar: "auto",
     nav: [

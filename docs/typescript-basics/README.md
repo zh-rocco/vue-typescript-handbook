@@ -3,7 +3,7 @@ sidebar: auto
 sidebarDepth: 3
 ---
 
-# Typescript 基础
+# TypeScript 基础
 
 ## 类型系统
 
@@ -19,7 +19,7 @@ let u = undefined;
 let n = null;
 ```
 
-Typescript
+TypeScript
 
 ```ts
 let isPending: boolean = true;
