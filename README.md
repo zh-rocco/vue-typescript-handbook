@@ -2,7 +2,9 @@
 
 Let's develop Vue app with TypeScript.
 
-## 内容
+[文档](https://zh-rocco.github.io/vue-typescript-handbook/)
+
+## 大纲
 
 ![Mind](./images/mind.png)
 
