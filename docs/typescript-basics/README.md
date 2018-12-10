@@ -17,12 +17,22 @@ let count = 10;
 let name = "Rocco";
 let u = undefined;
 let n = null;
+let arr = [1, 2, 3];
+let obj = { a: 1, b: 2, c: 3 };
 ```
 
 TypeScript
 
 ```ts
 let isPending: boolean = true;
+let count: number = 10;
+let name: string = "Rocco";
+let u: undefined = undefined;
+let n: null = null;
+let arr: number[] = [1, 2, 3];
+let obj: object = { a: 1, b: 2, c: 3 };
+
+let a: any; // 任意类型
 ```
 
 ### JS 数据类型 和 TS 数据类型对应表
@@ -40,7 +50,11 @@ let isPending: boolean = true;
 
 ::: warning
 声明一个 `void` 类型的变量没有什么用，因为你只能将它赋值为 `undefined` 和 `null`。
+
+`undefined` 类型的变量只能被赋值为 `undefined`，`null` 类型的变量只能被赋值为 `null`。
 :::
+
+### 类型推断
 
 ## 参考
 
