@@ -6,11 +6,11 @@ Let's develop Vue app with TypeScript.
 
 ## 大纲
 
-![Mind](./images/mind.png)
+![Outline](./images/outline.png)
 
 ## 写作
 
- [vuepress](https://vuepress.vuejs.org/).
+ [vuepress](https://vuepress.vuejs.org/)
 
 ```bash
 yarn

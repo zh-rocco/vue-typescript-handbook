@@ -48,17 +48,17 @@ let a: any; // 任意类型
 
 **说明：**
 
-::: warning
+::: warning 注意
+声明一个 `void` 类型的变量没有什么用，因为你只能将它赋值为 `undefined` 和 `null`。
 
-- 声明一个 `void` 类型的变量没有什么用，因为你只能将它赋值为 `undefined` 和 `null`。
-- `undefined` 类型的变量只能被赋值为 `undefined`，`null` 类型的变量只能被赋值为 `null`。
-  :::
+`undefined` 类型的变量只能被赋值为 `undefined`，`null` 类型的变量只能被赋值为 `null`。
+:::
 
 ::: tip
+在任意值上访问任何属性都是允许的，也允许调用任何方法。
 
-- 在任意值上访问任何属性都是允许的，也允许调用任何方法。
-- 声明一个变量为任意值之后，对它的任何操作，返回的内容的类型都是任意值。
-  :::
+声明一个变量为任意值之后，对它的任何操作，返回的内容的类型都是任意值。
+:::
 
 ### 类型推断
 
@@ -98,9 +98,268 @@ myFavoriteNumber = "seven";
 myFavoriteNumber = 7;
 ```
 
-### 接口（对象的类型）
+### 对象的类型（接口）
 
-## 参考
+使用接口（`interfaces`）来定义对象的类型。
+
+```ts
+interface Person {
+  name: string;
+  age: number;
+}
+
+let tom: Person = {
+  name: "Tom",
+  age: 25,
+};
+```
+
+#### 可选属性
+
+```ts{3}
+interface Person {
+  name: string;
+  age?: number;
+}
+```
+
+#### 任意属性
+
+```ts{4}
+interface Person {
+  name: string;
+  age?: number;
+  [propName: string]: string;
+}
+```
+
+::: warning 注意
+一旦定义了任意属性，那么确定属性和可选属性都必须是它的子属性。
+:::
+
+修改
+
+```ts{4,6}
+interface Person {
+  name: string;
+  age?: number;
+  [propName: string]: string | number;
+  // OR
+  [propName: string]: any;
+}
+```
+
+#### 只读属性
+
+```ts{2}
+interface Person {
+  readonly id: number;
+  name: string;
+  age?: number;
+  [propName: string]: any;
+}
+```
+
+### 数组的类型
+
+#### 「类型 + 方括号」表示法
+
+```ts
+let fibonacci: number[] = [1, 1, 2, 3, 5];
+let f: (number | string)[] = [1, 1, 2, 3, "5"];
+```
+
+#### 数组泛型
+
+```ts
+let fibonacci: Array<number> = [1, 1, 2, 3, 5];
+```
+
+#### 用接口表示数组
+
+```ts
+interface NumberArray {
+  [index: number]: number;
+}
+let fibonacci: NumberArray = [1, 1, 2, 3, 5];
+```
+
+### 函数的类型
+
+#### 函数声明
+
+```ts
+function sum(x: number, y: number): number {
+  return x + y;
+}
+```
+
+::: tip
+输入多余的（或者少于要求的）参数，是不被允许的。
+:::
+
+#### 用接口定义函数的形状
+
+```ts
+interface SearchFunc {
+  (source: string, subString: string): boolean;
+}
+
+let mySearch: SearchFunc;
+mySearch = function(source: string, subString: string) {
+  return source.search(subString) !== -1;
+};
+```
+
+#### 可选参数
+
+```ts
+function buildName(firstName: string, lastName?: string) {
+  if (lastName) {
+    return firstName + " " + lastName;
+  } else {
+    return firstName;
+  }
+}
+let tomcat = buildName("Tom", "Cat");
+let tom = buildName("Tom");
+```
+
+::: warning 注意
+可选参数后面不允许再出现必须参数。
+:::
+
+#### 重载
+
+```ts
+function reverse(x: number): number;
+function reverse(x: string): string;
+function reverse(x: number | string): number | string {
+  if (typeof x === "number") {
+    return Number(
+      x
+        .toString()
+        .split("")
+        .reverse()
+        .join(""),
+    );
+  } else if (typeof x === "string") {
+    return x
+      .split("")
+      .reverse()
+      .join("");
+  }
+}
+```
+
+## 类型断言
+
+类型断言（Type Assertion）可以用来手动指定一个值的类型。
+
+#### 语法
+
+`<类型>值` 或 `值 as 类型`
+
+::: tip
+推荐使用 `值 as 类型`，兼容性更好，支持 `tsx`。
+:::
+
+#### 示例
+
+`<类型>值`：
+
+```ts
+function getLength(something: string | number): number {
+  if ((<string>something).length) {
+    return (<string>something).length;
+  } else {
+    return something.toString().length;
+  }
+}
+```
+
+`值 as 类型`：
+
+```ts
+function getLength(something: string | number): number {
+  if ((something as string).length) {
+    return (something as string).length;
+  } else {
+    return something.toString().length;
+  }
+}
+```
+
+::: danger 警告
+类型断言不是类型转换，断言成一个联合类型中不存在的类型是不允许的。
+:::
+
+```ts
+function toBoolean(something: string | number): boolean {
+  return <boolean>something;
+}
+```
+
+## 声明文件
+
+### 手动添加声明文件
+
+通常我们会把类型声明放到一个单独的文件中，这就是声明文件：
+
+```ts
+// jQuery.d.ts
+
+declare var jQuery: (string) => any;
+```
+
+> 我们约定声明文件以 .d.ts 为后缀。
+
+然后在使用到的文件的开头，用「三斜线指令」表示引用了声明文件：
+
+```ts
+/// <reference path="./jQuery.d.ts" />
+
+jQuery("#foo");
+```
+
+### 第三方声明文件
+
+[TypeSearch](https://microsoft.github.io/TypeSearch/)
+
+[npm](https://www.npmjs.com/)
+
+## 内置对象
+
+### ECMAScript 的内置对象
+
+JavaScript 中有很多 [内置对象](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects)，它们可以直接在 TypeScript 中当做定义好了的类型。
+
+```ts
+let b: Boolean = new Boolean(1);
+let e: Error = new Error("Error occurred");
+let d: Date = new Date();
+let r: RegExp = /[a-z]/;
+```
+
+### DOM 和 BOM 的内置对象
+
+```ts
+let body: HTMLElement = document.body;
+let allDiv: NodeList = document.querySelectorAll("div");
+document.addEventListener("click", function(e: MouseEvent) {
+  // Do something
+});
+```
+
+### 用 TypeScript 写 Node.js
+
+TypeScript 核心库的定义中不包含 Node.js 部分，如果想用 TypeScript 写 Node.js，则需要引入第三方声明文件：
+
+```bash
+npm install @types/node --save-dev
+```
+
+## 参考（搬运）
 
 - [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
 
