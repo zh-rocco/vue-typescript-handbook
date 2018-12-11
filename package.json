@@ -8,7 +8,6 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@vuepress/plugin-active-header-links": "^1.0.0-alpha.0",
     "vuepress": "^1.0.0-alpha.27"
   }
 }

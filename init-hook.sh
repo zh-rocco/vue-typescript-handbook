@@ -2,8 +2,8 @@
 
 git init
 
-cp ./git-hooks/pre-commit .git/hooks/pre-commit
+cp ./git-hooks/pre-push .git/hooks/pre-push
 
-chmod 777 .git/hooks/pre-commit
+chmod 777 .git/hooks/pre-push
 
-echo -e "\x1B[32mpre-commit hook init successfully!\x1B[0m"
+echo -e "\x1B[32m >>> pre-push hook init successfully!\x1B[0m"
