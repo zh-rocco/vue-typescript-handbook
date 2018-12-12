@@ -1,6 +1,8 @@
 ---
 sidebar: auto
 sidebarDepth: 3
+prev: false
+next: ./class.md
 ---
 
 # TypeScript 基础
@@ -114,6 +116,18 @@ let tom: Person = {
 };
 ```
 
+也可以
+
+```ts
+let tom: {
+  name: string;
+  age: number;
+} = {
+  name: "Tom",
+  age: 25,
+};
+```
+
 #### 可选属性
 
 ```ts{3}
@@ -158,6 +172,38 @@ interface Person {
   age?: number;
   [propName: string]: any;
 }
+```
+
+#### 接口继承
+
+使用 `extends` 可以实现接口继承。
+
+**接口继承接口：**
+
+```ts
+interface Alarm {
+  alert();
+}
+
+interface LightableAlarm extends Alarm {
+  lightOn();
+  lightOff();
+}
+```
+
+**接口继承类：**
+
+```ts
+class Point {
+  x: number;
+  y: number;
+}
+
+interface Point3d extends Point {
+  z: number;
+}
+
+let point3d: Point3d = { x: 1, y: 2, z: 3 };
 ```
 
 ### 数组的类型
@@ -209,6 +255,28 @@ let mySearch: SearchFunc;
 mySearch = function(source: string, subString: string) {
   return source.search(subString) !== -1;
 };
+```
+
+如果函数还有自己的类型和方法：
+
+```ts
+interface Counter {
+  (start: number): string;
+  interval: number;
+  reset(): void;
+}
+
+function getCounter(): Counter {
+  let counter = <Counter>function(start: number) {};
+  counter.interval = 123;
+  counter.reset = function() {};
+  return counter;
+}
+
+let c = getCounter();
+c(10);
+c.reset();
+c.interval = 5.0;
 ```
 
 #### 可选参数
@@ -359,6 +427,107 @@ TypeScript 核心库的定义中不包含 Node.js 部分，如果想用 TypeScri
 npm install @types/node --save-dev
 ```
 
+## 字符串字面量形式
+
+字符串字面量类型用来约束取值只能是某几个字符串中的一个。
+
+```ts
+type TimePeriod = "AM" | "PM";
+
+let timePeriod: TimePeriod;
+timePeriod = "AM";
+```
+
+## 枚举
+
+枚举（Enum）类型用于取值被限定在一定范围内的场景，比如一周只能有七天，颜色限定为红绿蓝等。
+
+枚举使用 `enum` 关键字来定义：
+
+```ts
+enum Days {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+}
+```
+
+枚举成员会被赋值为从 `0` 开始递增的数字，同时也会对枚举值到枚举名进行反向映射：
+
+```ts
+enum Days {
+  Sun,
+  Mon,
+  Tue,
+  Wed,
+  Thu,
+  Fri,
+  Sat,
+}
+
+console.log(Days["Sun"] === 0); // true
+console.log(Days["Mon"] === 1); // true
+console.log(Days["Tue"] === 2); // true
+console.log(Days["Sat"] === 6); // true
+
+console.log(Days[0] === "Sun"); // true
+console.log(Days[1] === "Mon"); // true
+console.log(Days[2] === "Tue"); // true
+console.log(Days[6] === "Sat"); // true
+```
+
+## 声明合并
+
+### 函数的合并
+
+[使用重载定义多个函数类型](#重载)
+
+### 接口的合并
+
+```ts
+interface Alarm {
+  price: number;
+}
+interface Alarm {
+  weight: number;
+}
+```
+
+相当于
+
+```ts
+interface Alarm {
+  price: number;
+  weight: number;
+}
+```
+
+::: warning 注意
+合并的属性的类型必须是唯一的。
+:::
+
+```ts{5}
+interface Alarm {
+  price: number;
+}
+interface Alarm {
+  price: string; // 类型不一致，会报错
+  weight: number;
+}
+```
+
+### 类的合并
+
+同接口
+
+## 其他
+
+- `declare` 定义的类型只会用于编译时的检查，编译结果中会被删除。
+
 ## 参考（搬运）
 
 - [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
@@ -366,3 +535,7 @@ npm install @types/node --save-dev
 ## 目录
 
 [[toc]]
+
+```
+
+```

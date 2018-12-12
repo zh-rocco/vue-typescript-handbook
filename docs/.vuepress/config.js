@@ -9,8 +9,17 @@ module.exports = {
     nav: [
       // ...
       { text: "首页", link: "/" },
-      { text: "TS 基础", link: "/typescript-basics/" },
+      {
+        text: "TypeScript",
+        items: [
+          { text: "基础", link: "/typescript/types.html" },
+          { text: "类", link: "/typescript/class.html" },
+          { text: "泛型", link: "/typescript/generics.html" },
+        ],
+      },
     ],
+    lastUpdated: true,
+    repo: "https://github.com/zh-rocco/vue-typescript-handbook",
   },
   markdown: {
     lineNumbers: true,
