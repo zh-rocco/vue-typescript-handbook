@@ -1,7 +1,10 @@
-function createArray<T = string>(length: number, value: T): Array<T> {
-  let result: T[] = [];
-  for (let i = 0; i < length; i++) {
-    result[i] = value;
-  }
-  return result;
+function isAnimal(target: any) {
+  target.isAnimal = true;
+  return target;
 }
+@isAnimal
+class Cat {
+  // ...
+}
+
+console.log((Cat as any).isAnimal); // true

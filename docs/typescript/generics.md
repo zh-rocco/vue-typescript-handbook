@@ -2,7 +2,7 @@
 sidebar: auto
 sidebarDepth: 3
 prev: ./class.md
-next: false
+next: ./decorator.md
 ---
 
 # 泛型
