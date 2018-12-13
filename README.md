@@ -10,12 +10,19 @@ Let's develop Vue app with TypeScript.
 
 ## 写作
 
- [vuepress](https://vuepress.vuejs.org/)
-
 ```bash
 yarn
 
 yarn dev
+```
+
+## 发布
+
+```bash
+# 只需执行一次
+source ./init-hook.sh
+
+git push
 ```
 
 ## License

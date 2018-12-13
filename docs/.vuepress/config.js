@@ -16,6 +16,7 @@ module.exports = {
           { text: "类", link: "/typescript/class.html" },
           { text: "泛型", link: "/typescript/generics.html" },
           { text: "装饰器", link: "/typescript/decorator.html" },
+          { text: "常见问题", link: "/typescript/other.html" },
         ],
       },
     ],
@@ -32,5 +33,6 @@ module.exports = {
         searchMaxSuggestions: 10,
       },
     ],
+    "@vuepress/back-to-top",
   ],
 };

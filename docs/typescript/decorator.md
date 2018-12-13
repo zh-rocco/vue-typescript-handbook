@@ -2,7 +2,7 @@
 sidebar: auto
 sidebarDepth: 3
 prev: ./generics.md
-next: false
+next: ./other.md
 ---
 
 # 装饰器
