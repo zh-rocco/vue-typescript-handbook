@@ -22,6 +22,10 @@ module.exports = {
     ],
     lastUpdated: true,
     repo: "https://github.com/zh-rocco/vue-typescript-handbook",
+    docsDir: "docs",
+    docsBranch: "master",
+    editLinks: true,
+    editLinkText: "编辑此页面！",
   },
   markdown: {
     lineNumbers: true,
