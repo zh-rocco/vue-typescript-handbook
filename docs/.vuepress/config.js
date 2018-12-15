@@ -10,6 +10,15 @@ module.exports = {
       // ...
       { text: "首页", link: "/" },
       {
+        text: "Vue",
+        items: [
+          { text: "初始化", link: "/vue/init.html" },
+          { text: "实战", link: "/vue/use.html" },
+          { text: "常见问题", link: "/vue/faq.html" },
+          // ...
+        ],
+      },
+      {
         text: "TypeScript",
         items: [
           { text: "基础", link: "/typescript/types.html" },
