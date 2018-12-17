@@ -531,11 +531,3 @@ interface Alarm {
 ## 参考（搬运）
 
 - [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
-
-## 目录
-
-[[toc]]
-
-```
-
-```
