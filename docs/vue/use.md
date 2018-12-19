@@ -1,5 +1,8 @@
 ---
 sidebar: auto
+sidebarDepth: 3
+prev: ./init.md
+next: ./faq.md
 ---
 
 # 实战

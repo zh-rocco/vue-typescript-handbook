@@ -1,5 +1,8 @@
 ---
 sidebar: auto
+sidebarDepth: 3
+prev: false
+next: ./use.md
 ---
 
 # 项目初始化

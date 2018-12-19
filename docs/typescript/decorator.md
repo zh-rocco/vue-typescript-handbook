@@ -17,7 +17,7 @@ _装饰器_ 是一种特殊类型的声明，它能够被附加到 `类声明`�
 
 `tsconfig.json`
 
-```json{4}
+```json {4}
 {
   "compilerOptions": {
     "target": "ES5",
@@ -32,7 +32,7 @@ _装饰器_ 是一种特殊类型的声明，它能够被附加到 `类声明`�
 
 类装饰器只有一个参数：`target`。
 
-```ts{1}
+```ts {1}
 function isAnimal(target: any) {
   target.isAnimal = true;
   return target;
@@ -115,7 +115,7 @@ function readonly(target, name, descriptor) {
 
 ### 精简整理一下
 
-```js{7}
+```js {7}
 var __decorate = function(decorators, target, key, desc) {
   var d;
   var r;

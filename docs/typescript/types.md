@@ -5,11 +5,9 @@ prev: false
 next: ./class.md
 ---
 
-# TypeScript 基础
+# 类型系统
 
-## 类型系统
-
-### 示例
+## 示例
 
 JavaScript
 
@@ -37,7 +35,7 @@ let obj: object = { a: 1, b: 2, c: 3 };
 let a: any; // 任意类型
 ```
 
-### JS 数据类型 和 TS 数据类型对应表
+## JS 数据类型 和 TS 数据类型对应表
 
 | JavaScript 数据类型 | TypeScript 类型 |
 | :-----------------: | :-------------: |
@@ -62,7 +60,7 @@ let a: any; // 任意类型
 声明一个变量为任意值之后，对它的任何操作，返回的内容的类型都是任意值。
 :::
 
-### 类型推断
+## 类型推断
 
 ```ts
 let isPending = true;
@@ -90,7 +88,7 @@ let obj: object = { a: 1, b: 2, c: 3 };
 let a: any; // 任意类型
 ```
 
-### 联合类型
+## 联合类型
 
 联合类型使用 `|` 分隔每个类型。
 
@@ -100,7 +98,7 @@ myFavoriteNumber = "seven";
 myFavoriteNumber = 7;
 ```
 
-### 对象的类型（接口）
+## 对象的类型（接口）
 
 使用接口（`interfaces`）来定义对象的类型。
 
@@ -128,18 +126,18 @@ let tom: {
 };
 ```
 
-#### 可选属性
+### 可选属性
 
-```ts{3}
+```ts {3}
 interface Person {
   name: string;
   age?: number;
 }
 ```
 
-#### 任意属性
+### 任意属性
 
-```ts{4}
+```ts {4}
 interface Person {
   name: string;
   age?: number;
@@ -153,7 +151,7 @@ interface Person {
 
 修改
 
-```ts{4,6}
+```ts {4,6}
 interface Person {
   name: string;
   age?: number;
@@ -163,9 +161,9 @@ interface Person {
 }
 ```
 
-#### 只读属性
+### 只读属性
 
-```ts{2}
+```ts {2}
 interface Person {
   readonly id: number;
   name: string;
@@ -174,7 +172,7 @@ interface Person {
 }
 ```
 
-#### 接口继承
+### 接口继承
 
 使用 `extends` 可以实现接口继承。
 
@@ -206,22 +204,22 @@ interface Point3d extends Point {
 let point3d: Point3d = { x: 1, y: 2, z: 3 };
 ```
 
-### 数组的类型
+## 数组的类型
 
-#### 「类型 + 方括号」表示法
+### 「类型 + 方括号」表示法
 
 ```ts
 let fibonacci: number[] = [1, 1, 2, 3, 5];
 let f: (number | string)[] = [1, 1, 2, 3, "5"];
 ```
 
-#### 数组泛型
+### 数组泛型
 
 ```ts
 let fibonacci: Array<number> = [1, 1, 2, 3, 5];
 ```
 
-#### 用接口表示数组
+### 用接口表示数组
 
 ```ts
 interface NumberArray {
@@ -230,9 +228,9 @@ interface NumberArray {
 let fibonacci: NumberArray = [1, 1, 2, 3, 5];
 ```
 
-### 函数的类型
+## 函数的类型
 
-#### 函数声明
+### 函数声明
 
 ```ts
 function sum(x: number, y: number): number {
@@ -244,7 +242,7 @@ function sum(x: number, y: number): number {
 输入多余的（或者少于要求的）参数，是不被允许的。
 :::
 
-#### 用接口定义函数的形状
+### 用接口定义函数的形状
 
 ```ts
 interface SearchFunc {
@@ -279,7 +277,7 @@ c.reset();
 c.interval = 5.0;
 ```
 
-#### 可选参数
+### 可选参数
 
 ```ts
 function buildName(firstName: string, lastName?: string) {
@@ -297,7 +295,7 @@ let tom = buildName("Tom");
 可选参数后面不允许再出现必须参数。
 :::
 
-#### 重载
+### 重载
 
 ```ts
 function reverse(x: number): number;
@@ -324,7 +322,7 @@ function reverse(x: number | string): number | string {
 
 类型断言（Type Assertion）可以用来手动指定一个值的类型。
 
-#### 语法
+### 语法
 
 `<类型>值` 或 `值 as 类型`
 
@@ -332,7 +330,7 @@ function reverse(x: number | string): number | string {
 推荐使用 `值 as 类型`，兼容性更好，支持 `tsx`。
 :::
 
-#### 示例
+### 示例
 
 `<类型>值`：
 
@@ -510,7 +508,7 @@ interface Alarm {
 合并的属性的类型必须是唯一的。
 :::
 
-```ts{5}
+```ts {5}
 interface Alarm {
   price: number;
 }
@@ -524,7 +522,7 @@ interface Alarm {
 
 同接口
 
-## 其他
+## 补充说明
 
 - `declare` 定义的类型只会用于编译时的检查，编译结果中会被删除。
 

@@ -21,7 +21,7 @@ module.exports = {
       {
         text: "TypeScript",
         items: [
-          { text: "基础", link: "/typescript/types.html" },
+          { text: "类型系统", link: "/typescript/types.html" },
           { text: "类", link: "/typescript/class.html" },
           { text: "泛型", link: "/typescript/generics.html" },
           { text: "装饰器", link: "/typescript/decorator.html" },

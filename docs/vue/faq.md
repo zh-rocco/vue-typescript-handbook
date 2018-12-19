@@ -1,6 +1,8 @@
 ---
 sidebar: auto
 sidebarDepth: 2
+prev: ./use.md
+next: false
 ---
 
 # 常见问题
