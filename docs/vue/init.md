@@ -23,15 +23,7 @@ npm i -g @vue/cli
 vue create vue-typescript
 ```
 
-### 选择自定义 features
-
 ![Step - 1](./images/vue-cli-01.png)
-
-### features 配置如下
-
-::: tip
-`Use class-style component syntax?` 选择 `Yes`。
-:::
 
 ![Step - 2](./images/vue-cli-02.png)
 
@@ -39,23 +31,16 @@ vue create vue-typescript
 
 ![Vue JS&TS](./images/vue-js-ts.png)
 
-## 是否使用 class-style component syntax
-
-### 不使用
+## `Component` 的两种风格
 
 `src/views/Home.vue`
 
-```vue
-<template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
-</template>
+**`Vue.extend` 构造器**
 
+```vue
 <script lang="ts">
 import Vue from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import HelloWorld from "@/components/HelloWorld.vue";
 
 export default Vue.extend({
   name: "home",
@@ -66,21 +51,12 @@ export default Vue.extend({
 </script>
 ```
 
-### 使用（推荐）
+**`class-style component syntax`**
 
-`src/views/Home.vue`
-
-```vue{8-18}
-<template>
-  <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
-  </div>
-</template>
-
+```vue
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import HelloWorld from "@/components/HelloWorld.vue";
 
 @Component({
   components: {

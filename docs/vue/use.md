@@ -7,16 +7,102 @@ next: ./faq.md
 
 # 实战
 
+## 对比 JS
+
+`*.js`
+
+```vue
+<script>
+import Child from "path/to/Child.vue";
+
+export default {
+  name: "component-name",
+  components: {
+    Child,
+  },
+  props: {
+    msg: { type: String, default: "" },
+  },
+  data() {
+    return {
+      count: 10,
+      price: 99,
+    };
+  },
+  computed: {
+    money() {
+      return this.count * this.price;
+    },
+  },
+  watch: {
+    count(newValue, oldValue) {},
+  },
+  methods: {
+    handleCountChange() {},
+  },
+  filters: {
+    prefix(value) {
+      return "$" + value;
+    },
+  },
+  created() {},
+  beforeRouteEnter(to, from, next) {},
+};
+</script>
+```
+
+`*.ts`
+
+```vue
+<script lang="ts">
+import { Component, Vue, Prop, Watch } from "vue-property-decorator";
+import Child from "path/to/Child.vue";
+
+@Component({
+  components: {
+    Child,
+  },
+
+  /* router hooks */
+  beforeRouteEnter(to, from, next) {
+    console.log("beforeRouteEnter");
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    // 可以通过 this 访问组件实例
+    console.log("beforeRouteLeave");
+    next();
+  },
+})
+export default class ComponentName extends Vue {
+  /* props */
+  @Prop({ type: String, default: "" }) private msg!: string;
+
+  /* data */
+  private count = 10;
+  private price = 99;
+
+  /* computed */
+  private get money() {
+    return this.count * this.price;
+  }
+
+  /* watch */
+  @Watch("count")
+  private onCountChanged(newValue: number, oldValue: number) {}
+
+  /* methods */
+  private handleCountChange() {}
+
+  /* instance lifecycle Hooks */
+  private created() {}
+}
+</script>
+```
+
 ## 组件
 
 ```vue
-<template>
-  <div class="home" ref="print">
-    <button @click="handlePrint">打印</button> <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Vue + TypeScript" />
-  </div>
-</template>
-
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
 import HelloWorld from "@/components/HelloWorld.vue";

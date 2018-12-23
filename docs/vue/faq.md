@@ -202,3 +202,25 @@ interface Window {
   __oa__: any;
 }
 ```
+
+## 不要使用 `undefined` 作为 class property 的初始值
+
+```ts
+@Component
+class MyComp extends Vue {
+  // Will not be reactive
+  foo = undefined;
+
+  // Will be reactive
+  bar = null;
+
+  data() {
+    return {
+      // Will be reactive
+      baz: undefined,
+    };
+  }
+}
+```
+
+[参考](https://github.com/vuejs/vue-class-component#undefined-will-not-be-reactive)
