@@ -1,7 +1,0 @@
-#!/usr/bin/env bash
-
-echo -e "\x1B[34m >>>pre-push is running ...\x1B[0m"
-
-source ./deploy.sh
-
-echo -e "\x1B[34m >>>deploy docs to branch:gh-pages successfully!\x1B[0m"
