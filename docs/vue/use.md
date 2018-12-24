@@ -102,6 +102,8 @@ export default class ComponentName extends Vue {
 
 ## 组件
 
+### 示例
+
 ```vue
 <script lang="ts">
 import { Component, Vue } from "vue-property-decorator";
@@ -128,6 +130,84 @@ export default class Home extends Vue {
 }
 </script>
 ```
+
+### 说明
+
+Vue 通过 `Component` [装饰器](/typescript/decorator.md) 实现 `class-style` 语法。
+
+`Component` 装饰器本质上是对 [Vue.extend](https://cn.vuejs.org/v2/api/#Vue-extend) 的封装：
+
+1. 从 [`vue-property-decorator`](https://github.com/kaorun343/vue-property-decorator) 导入 `Component` 装饰器
+
+```ts
+import { Component, Vue } from "vue-property-decorator";
+```
+
+2. 而 `vue-property-decorator` 又是引用 `vue-class-component` 中的 `Component` 装饰器
+
+`vue-class-component (index.ts)` [详情](https://github.com/kaorun343/vue-property-decorator/blob/master/src/vue-property-decorator.ts#L5-#L12)
+
+```ts {2,9}
+import Vue, { PropOptions, WatchOptions } from "vue";
+import Component, { createDecorator, mixins } from "vue-class-component";
+import { InjectKey } from "vue/types/options";
+
+export type Constructor = {
+  new (...args: any[]): any;
+};
+
+export { Component, Vue, mixins as Mixins };
+```
+
+`vue-class-component (index.ts)` [详情](https://github.com/vuejs/vue-class-component/blob/master/src/index.ts#L7-L16)
+
+```ts {7-16}
+import Vue, { ComponentOptions } from "vue";
+import { VueClass } from "./declarations";
+import { componentFactory, $internalHooks } from "./component";
+
+export { createDecorator, VueDecorator, mixins } from "./util";
+
+function Component<V extends Vue>(options: ComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC;
+function Component<VC extends VueClass<Vue>>(target: VC): VC;
+function Component(options: ComponentOptions<Vue> | VueClass<Vue>): any {
+  if (typeof options === "function") {
+    return componentFactory(options);
+  }
+  return function(Component: VueClass<Vue>) {
+    return componentFactory(Component, options);
+  };
+}
+
+Component.registerHooks = function registerHooks(keys: string[]): void {
+  $internalHooks.push(...keys);
+};
+
+export default Component;
+```
+
+`vue-class-component (component.ts)` [详情](https://github.com/vuejs/vue-class-component/blob/master/src/component.ts#L81)
+
+```ts
+export function componentFactory(Component: VueClass<Vue>, options: ComponentOptions<Vue> = {}): VueClass<Vue> {
+  // ...
+
+  // find super
+  const superProto = Object.getPrototypeOf(Component.prototype);
+  const Super = superProto instanceof Vue ? (superProto.constructor as VueClass<Vue>) : Vue;
+  const Extended = Super.extend(options);
+
+  // ...
+
+  return Extended;
+}
+```
+
+**参考：**
+
+- [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator/blob/master/src/vue-property-decorator.ts#L5-#L12)
+- [vue-class-component (index.ts)](https://github.com/vuejs/vue-class-component/blob/master/src/index.ts#L7-L16)
+- [vue-class-component (component.ts)](https://github.com/vuejs/vue-class-component/blob/master/src/component.ts#L81)
 
 ## props
 

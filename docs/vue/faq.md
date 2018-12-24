@@ -224,3 +224,9 @@ class MyComp extends Vue {
 ```
 
 [参考](https://github.com/vuejs/vue-class-component#undefined-will-not-be-reactive)
+
+## `*.vue` 文件的编译过程
+
+**JS:** `*.vue` --> `vue-loader` --> `js (html, css)` --> `babel-loader` --> `*.js`
+
+**TS:** `*.vue` --> `vue-loader` --> `ts (html, css)` --> `ts-loader` --> `babel-loader` --> `*.js`

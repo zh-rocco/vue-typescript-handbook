@@ -19,13 +19,19 @@ npm i -g @vue/cli
 
 ## 创建项目
 
+### STEP 1
+
 ```bash
-vue create vue-typescript
+vue create <project name>
 ```
 
-![Step - 1](./images/vue-cli-01.png)
+### STEP 2
 
-![Step - 2](./images/vue-cli-02.png)
+选择 `vue cli preset`: **Manually select features**
+
+### STEP 3
+
+![features](./images/vue-cli-02.png)
 
 ## 与 JS 项目对比
 
@@ -33,9 +39,9 @@ vue create vue-typescript
 
 ## `Component` 的两种风格
 
-`src/views/Home.vue`
+通过 [**Manually select features**](#step-3) 过程中的 **Use class-style component syntax** 指定
 
-**`Vue.extend` 构造器**
+#### `Vue.extend` 构造器
 
 ```vue
 <script lang="ts">
@@ -51,7 +57,7 @@ export default Vue.extend({
 </script>
 ```
 
-**`class-style component syntax`**
+#### `class-style component syntax`
 
 ```vue
 <script lang="ts">
