@@ -13,7 +13,7 @@ module.exports = {
         text: "Vue",
         items: [
           { text: "初始化", link: "/vue/init.html" },
-          { text: "实战", link: "/vue/use.html" },
+          { text: "类风格的组件", link: "/vue/use.html" },
           { text: "常见问题", link: "/vue/faq.html" },
           // ...
         ],

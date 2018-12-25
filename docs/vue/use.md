@@ -5,15 +5,17 @@ prev: ./init.md
 next: ./faq.md
 ---
 
-# 实战
+# 类风格的组件
 
-## 对比 JS
+## 综述（对比 JS）
 
-`*.js`
+### JS 语法
+
+对外暴露了一个处理后的 `options` 对象。
 
 ```vue
 <script>
-import Child from "path/to/Child.vue";
+import Child from "path/to/Child";
 
 export default {
   name: "component-name",
@@ -46,12 +48,22 @@ export default {
     },
   },
   created() {},
-  beforeRouteEnter(to, from, next) {},
+  beforeRouteEnter(to, from, next) {
+    console.log("beforeRouteEnter");
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    // 可以通过 this 访问组件实例
+    console.log("beforeRouteLeave");
+    next();
+  },
 };
 </script>
 ```
 
-`*.ts`
+### TS 语法
+
+对外暴露了一个 Vue 子类，下面会详细介绍。
 
 ```vue
 <script lang="ts">
@@ -79,22 +91,22 @@ export default class ComponentName extends Vue {
   @Prop({ type: String, default: "" }) private msg!: string;
 
   /* data */
-  private count = 10;
+  private count: number = 10;
   private price = 99;
 
   /* computed */
-  private get money() {
+  private get money(): number {
     return this.count * this.price;
   }
 
   /* watch */
   @Watch("count")
-  private onCountChanged(newValue: number, oldValue: number) {}
+  private onCountChanged(newValue: number, oldValue: number): void {}
 
   /* methods */
   private handleCountChange() {}
 
-  /* instance lifecycle Hooks */
+  /* instance lifecycle hooks */
   private created() {}
 }
 </script>
@@ -102,176 +114,261 @@ export default class ComponentName extends Vue {
 
 ## 组件
 
-### 示例
+**JS 语法**
 
-```vue
-<script lang="ts">
-import { Component, Vue } from "vue-property-decorator";
-import HelloWorld from "@/components/HelloWorld.vue";
-import Print from "@/utils/print";
-import { calendar } from "@/utils/calendar/calendar";
-
-@Component({
-  components: {
-    HelloWorld,
-  },
-})
-export default class Home extends Vue {
-  private handlePrint() {
-    new Print(this.$refs.print).init();
-  }
-
-  private mounted() {
-    window.console.log(calendar);
-    if (this.$loading) {
-      this.$loading();
-    }
-  }
-}
-</script>
+```js
+export default {};
 ```
 
-### 说明
-
-Vue 通过 `Component` [装饰器](/typescript/decorator.md) 实现 `class-style` 语法。
-
-`Component` 装饰器本质上是对 [Vue.extend](https://cn.vuejs.org/v2/api/#Vue-extend) 的封装：
-
-1. 从 [`vue-property-decorator`](https://github.com/kaorun343/vue-property-decorator) 导入 `Component` 装饰器
+**TS 语法**
 
 ```ts
 import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {}
 ```
 
-2. 而 `vue-property-decorator` 又是引用 `vue-class-component` 中的 `Component` 装饰器
-
-`vue-class-component (index.ts)` [详情](https://github.com/kaorun343/vue-property-decorator/blob/master/src/vue-property-decorator.ts#L5-#L12)
-
-```ts {2,9}
-import Vue, { PropOptions, WatchOptions } from "vue";
-import Component, { createDecorator, mixins } from "vue-class-component";
-import { InjectKey } from "vue/types/options";
-
-export type Constructor = {
-  new (...args: any[]): any;
-};
-
-export { Component, Vue, mixins as Mixins };
-```
-
-`vue-class-component (index.ts)` [详情](https://github.com/vuejs/vue-class-component/blob/master/src/index.ts#L7-L16)
-
-```ts {7-16}
-import Vue, { ComponentOptions } from "vue";
-import { VueClass } from "./declarations";
-import { componentFactory, $internalHooks } from "./component";
-
-export { createDecorator, VueDecorator, mixins } from "./util";
-
-function Component<V extends Vue>(options: ComponentOptions<V> & ThisType<V>): <VC extends VueClass<V>>(target: VC) => VC;
-function Component<VC extends VueClass<Vue>>(target: VC): VC;
-function Component(options: ComponentOptions<Vue> | VueClass<Vue>): any {
-  if (typeof options === "function") {
-    return componentFactory(options);
-  }
-  return function(Component: VueClass<Vue>) {
-    return componentFactory(Component, options);
-  };
-}
-
-Component.registerHooks = function registerHooks(keys: string[]): void {
-  $internalHooks.push(...keys);
-};
-
-export default Component;
-```
-
-`vue-class-component (component.ts)` [详情](https://github.com/vuejs/vue-class-component/blob/master/src/component.ts#L81)
-
-```ts
-export function componentFactory(Component: VueClass<Vue>, options: ComponentOptions<Vue> = {}): VueClass<Vue> {
-  // ...
-
-  // find super
-  const superProto = Object.getPrototypeOf(Component.prototype);
-  const Super = superProto instanceof Vue ? (superProto.constructor as VueClass<Vue>) : Vue;
-  const Extended = Super.extend(options);
-
-  // ...
-
-  return Extended;
-}
-```
-
-**参考：**
-
-- [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator/blob/master/src/vue-property-decorator.ts#L5-#L12)
-- [vue-class-component (index.ts)](https://github.com/vuejs/vue-class-component/blob/master/src/index.ts#L7-L16)
-- [vue-class-component (component.ts)](https://github.com/vuejs/vue-class-component/blob/master/src/component.ts#L81)
+[深入理解 `Component` 装饰器](./component-deep.md)
 
 ## props
 
-```ts
-import { Vue, Component, Prop } from "vue-property-decorator";
+**JS 语法**
 
-@Component
-export default class YourComponent extends Vue {
-  @Prop(Number) propA!: number;
-  @Prop({ default: "default value" }) propB!: string;
-  @Prop([String, Boolean]) propC!: string | boolean;
-}
-```
-
-is equivalent to
-
-```ts
+```js
 export default {
   props: {
-    propA: { type: Number },
-    propB: { default: "default value" },
-    propC: { type: [String, Boolean] },
+    msg: { type: String, default: "" },
   },
 };
 ```
+
+**TS 语法**
+
+```ts
+import { Component, Vue, Prop } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {
+  @Prop({ type: String, default: "" }) private msg!: string;
+}
+```
+
+[详细教程](https://github.com/kaorun343/vue-property-decorator#propoptions-propoptions--constructor--constructor---decorator)
 
 ::: tip
 props name 后添加 [`!` 修饰符](http://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html) 是为了防止 [Strict Class Initialization](http://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html) 警告。
 :::
 
-## watch
+## data
 
-```ts
-import { Vue, Component, Watch } from "vue-property-decorator";
+**JS 语法**
 
-@Component
-export default class YourComponent extends Vue {
-  @Watch("child")
-  onChildChanged(val: string, oldVal: string) {}
-
-  @Watch("person", { immediate: true, deep: true })
-  onPersonChanged(val: Person, oldVal: Person) {}
-}
-```
-
-is equivalent to
-
-```ts
+```js
 export default {
-  watch: {
-    child: {
-      handler: "onChildChanged",
-      immediate: false,
-      deep: false,
-    },
-    person: {
-      handler: "onPersonChanged",
-      immediate: true,
-      deep: true,
-    },
-  },
-  methods: {
-    onChildChanged(val, oldVal) {},
-    onPersonChanged(val, oldVal) {},
+  data() {
+    return {
+      count: 10,
+      price: 99,
+    };
   },
 };
 ```
+
+**TS 语法**
+
+```ts
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {
+  private count: number = 10;
+  private price = 99;
+}
+```
+
+## computed
+
+**JS 语法**
+
+```js
+export default {
+  computed: {
+    money() {
+      return this.count * this.price;
+    },
+  },
+};
+```
+
+**TS 语法**
+
+```ts
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {
+  private get money(): number {
+    return this.count * this.price;
+  }
+}
+```
+
+## methods
+
+**JS 语法**
+
+```js
+export default {
+  methods: {
+    handleCountChange() {},
+  },
+};
+```
+
+**TS 语法**
+
+```ts
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {
+  private handleCountChange() {}
+}
+```
+
+## watch
+
+**JS 语法**
+
+```js
+export default {
+  watch: {
+    count(newValue, oldValue) {},
+  },
+};
+```
+
+**TS 语法**
+
+```ts
+import { Component, Vue, Watch } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {
+  private count: number = 10;
+
+  @Watch("count")
+  private onCountChanged(newValue: number, oldValue: number): void {}
+}
+```
+
+## lifecycle hooks
+
+**JS 语法**
+
+```js
+export default {
+  beforeCreate() {},
+  created() {},
+  beforeDestroy() {},
+};
+```
+
+**TS 语法**
+
+```ts
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {
+  private beforeCreate() {}
+  private created() {}
+  private beforeDestroy() {}
+}
+```
+
+## components
+
+**JS 语法**
+
+```js
+import Child from "path/to/Child";
+
+export default {
+  components: {
+    Child,
+  },
+};
+```
+
+**TS 语法**
+
+```ts
+import { Component, Vue } from "vue-property-decorator";
+import Child from "path/to/Child.vue";
+
+@Component({
+  components: {
+    Child,
+  },
+})
+export default class Home extends Vue {}
+```
+
+## router hooks
+
+**JS 语法**
+
+```js
+import Child from "path/to/Child";
+
+export default {
+  beforeRouteEnter(to, from, next) {
+    console.log("beforeRouteEnter");
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    // 可以通过 this 访问组件实例
+    console.log("beforeRouteLeave");
+    next();
+  },
+};
+```
+
+**TS 语法**
+
+```ts
+import { Component, Vue } from "vue-property-decorator";
+
+@Component({
+  /* router hooks */
+  beforeRouteEnter(to, from, next) {
+    console.log("beforeRouteEnter");
+    next();
+  },
+  beforeRouteLeave(to, from, next) {
+    // 可以通过 this 访问组件实例
+    console.log("beforeRouteLeave");
+    next();
+  },
+})
+export default class Home extends Vue {}
+```
+
+## 总结
+
+语法变更可以分成 3 类：
+
+- 直接写在类下
+  - `data, methods, render, errorCaptured`
+  - `computed`，类访问器写法 `get`
+  - lifecycle hooks: `beforeCreate, created, beforeMount, mounted, beforeDestroy, destroyed, beforeUpdate, updated, activated`, [参见](https://github.com/vuejs/vue-class-component/blob/master/src/component.ts#L7-L21)
+- 需要装饰器：`props, watch`
+- 除了上述指明的属性外其余均需要放到 `Component` 装饰器的 options 内，如：
+  - `name, components, filters, directives` 等
+  - router hooks: `beforeRouteEnter,beforeRouteUpdate, beforeRouteLeave`
+
+## 参考
+
+- [vue-property-decorator](https://github.com/kaorun343/vue-property-decorator)
