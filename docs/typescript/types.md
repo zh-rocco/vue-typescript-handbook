@@ -1,6 +1,5 @@
 ---
-sidebar: auto
-sidebarDepth: 3
+sidebarDepth: 1
 prev: false
 next: ./class.md
 ---
@@ -35,7 +34,7 @@ let obj: object = { a: 1, b: 2, c: 3 };
 let a: any; // 任意类型
 ```
 
-## JS 数据类型 和 TS 数据类型对应表
+## 原始数据类型
 
 | JavaScript 数据类型 | TypeScript 类型 |
 | :-----------------: | :-------------: |
@@ -49,7 +48,7 @@ let a: any; // 任意类型
 **说明：**
 
 ::: warning 注意
-声明一个 `void` 类型的变量没有什么用，因为你只能将它赋值为 `undefined` 和 `null`。
+声明一个 `void` 类型的变量没有什么用，因为你只能将它赋值为 `undefined`。
 
 `undefined` 类型的变量只能被赋值为 `undefined`，`null` 类型的变量只能被赋值为 `null`。
 :::
@@ -60,47 +59,9 @@ let a: any; // 任意类型
 声明一个变量为任意值之后，对它的任何操作，返回的内容的类型都是任意值。
 :::
 
-## 类型推断
+## 对象的类型
 
-```ts
-let isPending = true;
-let num = 10;
-let str = "Rocco";
-let u = undefined;
-let n = null;
-let arr = [1, 2, 3];
-let obj = { a: 1, b: 2, c: 3 };
-
-let a; // 任意类型
-```
-
-等同
-
-```ts
-let isPending: boolean = true;
-let num: number = 10;
-let str: string = "Rocco";
-let u: undefined = undefined;
-let n: null = null;
-let arr: number[] = [1, 2, 3];
-let obj: object = { a: 1, b: 2, c: 3 };
-
-let a: any; // 任意类型
-```
-
-## 联合类型
-
-联合类型使用 `|` 分隔每个类型。
-
-```ts
-let myFavoriteNumber: string | number;
-myFavoriteNumber = "seven";
-myFavoriteNumber = 7;
-```
-
-## 对象的类型（接口）
-
-使用接口（`interfaces`）来定义对象的类型。
+使用关键字 `interfaces` 来定义对象的类型。
 
 ```ts
 interface Person {
@@ -114,7 +75,7 @@ let tom: Person = {
 };
 ```
 
-也可以
+下面的写法也可以，比较灵活，但是无法复用。
 
 ```ts
 let tom: {
@@ -145,6 +106,8 @@ interface Person {
 }
 ```
 
+上面的写法有类型错误。
+
 ::: warning 注意
 一旦定义了任意属性，那么确定属性和可选属性都必须是它的子属性。
 :::
@@ -155,8 +118,6 @@ interface Person {
 interface Person {
   name: string;
   age?: number;
-  [propName: string]: string | number;
-  // OR
   [propName: string]: any;
 }
 ```
@@ -176,7 +137,7 @@ interface Person {
 
 使用 `extends` 可以实现接口继承。
 
-**接口继承接口：**
+#### 接口继承接口
 
 ```ts
 interface Alarm {
@@ -189,7 +150,7 @@ interface LightableAlarm extends Alarm {
 }
 ```
 
-**接口继承类：**
+#### 接口继承类
 
 ```ts
 class Point {
@@ -213,13 +174,13 @@ let fibonacci: number[] = [1, 1, 2, 3, 5];
 let f: (number | string)[] = [1, 1, 2, 3, "5"];
 ```
 
-### 数组泛型
+### 泛型表示法
 
 ```ts
 let fibonacci: Array<number> = [1, 1, 2, 3, 5];
 ```
 
-### 用接口表示数组
+### 接口表示法
 
 ```ts
 interface NumberArray {
@@ -318,6 +279,44 @@ function reverse(x: number | string): number | string {
 }
 ```
 
+## 联合类型
+
+联合类型使用 `|` 分隔每个类型。
+
+```ts
+let myFavoriteNumber: string | number;
+myFavoriteNumber = "seven";
+myFavoriteNumber = 7;
+```
+
+## 类型推断
+
+```ts
+let isPending = true;
+let num = 10;
+let str = "Rocco";
+let u = undefined;
+let n = null;
+let arr = [1, 2, 3];
+let obj = { a: 1, b: 2, c: 3 };
+
+let a; // 任意类型
+```
+
+等同
+
+```ts
+let isPending: boolean = true;
+let num: number = 10;
+let str: string = "Rocco";
+let u: undefined = undefined;
+let n: null = null;
+let arr: number[] = [1, 2, 3];
+let obj: object = { a: 1, b: 2, c: 3 };
+
+let a: any; // 任意类型
+```
+
 ## 类型断言
 
 类型断言（Type Assertion）可以用来手动指定一个值的类型。
@@ -368,7 +367,7 @@ function toBoolean(something: string | number): boolean {
 
 ## 声明文件
 
-声明语句不会被编译成 JS，只用于开发和编译过程中的类型检测。
+`declare` 定义的类型只会用于编译时的检查，编译结果中会被删除。
 
 ::: tip
 `declare` 关键字用于类型声明。我们约定声明文件以 `.d.ts` 为后缀。
@@ -633,10 +632,6 @@ interface Alarm {
 ### 类的合并
 
 同接口
-
-## 补充说明
-
-- `declare` 定义的类型只会用于编译时的检查，编译结果中会被删除。
 
 ## 参考（搬运）
 
