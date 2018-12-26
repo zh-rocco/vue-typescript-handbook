@@ -7,6 +7,10 @@ next: false
 
 # 其他
 
+## `declare interface` 和 `interface` 的区别
+
+无区别，因为 `interface` 默认就是 `declare`，[详见](https://stackoverflow.com/questions/38683155/difference-between-interface-and-declare-interface)。
+
 ## 重写类型的动态查找
 
 可以通过 `declare module 'somePath'` 来声明一个全局模块的方式，用来解决查找模块路径的问题：

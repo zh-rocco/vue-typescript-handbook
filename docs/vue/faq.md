@@ -157,7 +157,7 @@ npm i -D @types/node
 这种类型的库允许直接在 TS 项目中使用。
 
 ::: tip
-查看库的 `package.json` 中有无 `typings` 字段。
+查看库的 `package.json` 中有无 `typings` 或 `types` 字段。
 :::
 
 例如：
@@ -182,16 +182,15 @@ npm i -S @types/*
 
 ### 无类型文件，无对应的 `@types/*` 包
 
-在项目中添加类型文件，以 `gt-native-wap-bridge-sdk` 为例：
+在项目中手动添加类型文件，以 `gt-native-wap-bridge-sdk` 为例：
 
 `src/global.d.ts`
 
 ```ts
-declare module "gt-native-wap-bridge-sdk" {
-  const NativeBridge: any;
-  export default NativeBridge;
-}
+declare module "gt-native-wap-bridge-sdk";
 ```
+
+[参考](/typescript/types.md#外部模块简写)
 
 ## `window` 上添加全局变量
 

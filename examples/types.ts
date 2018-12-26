@@ -1,18 +1,14 @@
-const arr = [
-  { id: 0, name: "0" },
-  { id: 1, name: "1" },
-  { id: 2, name: "2" },
-  // ...
-];
-
-const find = (idx: number) => {
-  const res = arr.find(({ id }) => id === idx);
-  if (typeof res === "object") {
-    return res.name;
+declare namespace OOO {
+  const version = "1.0.0";
+  interface Item {
+    label: string;
+    value: string | number;
   }
-};
-
-console.log(find(1));
-console.log(find(4));
-
-const f = name;
+  function getName(id: number): string;
+  class Person {
+    private name: string;
+    private age: number;
+    constructor(name: string, age: number);
+    private getName(): string;
+  }
+}

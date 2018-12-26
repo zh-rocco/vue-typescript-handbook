@@ -9,7 +9,7 @@ next: ./class.md
 
 ## 示例
 
-JavaScript
+**JS 语法**
 
 ```js
 let isPending = true;
@@ -21,7 +21,7 @@ let arr = [1, 2, 3];
 let obj = { a: 1, b: 2, c: 3 };
 ```
 
-TypeScript
+**TS 语法**
 
 ```ts
 let isPending: boolean = true;
@@ -368,6 +368,71 @@ function toBoolean(something: string | number): boolean {
 
 ## 声明文件
 
+声明语句不会被编译成 JS，只用于开发和编译过程中的类型检测。
+
+::: tip
+`declare` 关键字用于类型声明。我们约定声明文件以 `.d.ts` 为后缀。
+:::
+
+### 全局类型
+
+#### 变量
+
+```ts
+declare const version = "1.0.0";
+```
+
+#### 对象
+
+```ts
+interface Item {
+  label: string;
+  value: string | number;
+}
+```
+
+::: tip
+`interface` 前面的 `declare` 可以省略。
+:::
+
+#### 函数
+
+```ts
+declare function getName(id: number): string;
+```
+
+#### class
+
+```ts
+declare class Person {
+  private name: string;
+  private age: number;
+  constructor(name: string, age: number);
+  private getName(): string;
+}
+```
+
+#### namespace
+
+```ts
+declare namespace OOO {
+  const version = "1.0.0";
+  interface Item {
+    label: string;
+    value: string | number;
+  }
+  function getName(id: number): string;
+  class Person {
+    private name: string;
+    private age: number;
+    constructor(name: string, age: number);
+    private getName(): string;
+  }
+}
+```
+
+[参考](https://segmentfault.com/a/1190000009247663)
+
 ### 手动添加声明文件
 
 通常我们会把类型声明放到一个单独的文件中，这就是声明文件：
@@ -378,8 +443,6 @@ function toBoolean(something: string | number): boolean {
 declare var jQuery: (string) => any;
 ```
 
-> 我们约定声明文件以 .d.ts 为后缀。
-
 然后在使用到的文件的开头，用「三斜线指令」表示引用了声明文件：
 
 ```ts
@@ -388,11 +451,60 @@ declare var jQuery: (string) => any;
 jQuery("#foo");
 ```
 
+### 声明文件放到哪里
+
+如果是模块的话，将 `*.d.ts` 放到和源码 `*.js`（或 `*.ts`）同目录，如果是全局变量的话放到哪里都可以，推荐放到 `src/global.d.ts` 内。
+
 ### 第三方声明文件
 
 [TypeSearch](https://microsoft.github.io/TypeSearch/)
 
 [npm](https://www.npmjs.com/)
+
+## 模块
+
+开始时模块这一概念包括内部模块和外部模块，现在内部模块称作 **命名空间（`namespace`）**，外部模块则简称为 **模块（`module`）**。
+
+使用 `declare module` 对模块进行类型声明。
+
+### 外部模块
+
+`node.d.ts`
+
+```ts
+declare module "url" {
+  export interface Url {
+    protocol?: string;
+    hostname?: string;
+    pathname?: string;
+  }
+  export function parse(urlStr: string, parseQueryString?, slashesDenoteHost?): Url;
+}
+
+declare module "path" {
+  export function normalize(p: string): string;
+  export function join(...paths: any[]): string;
+  export let sep: string;
+}
+```
+
+使用
+
+```ts
+/// <reference path="node.d.ts" />
+import * as URL from "url";
+let myUrl = URL.parse("http://www.typescriptlang.org");
+```
+
+### 外部模块简写
+
+假如你不想在使用一个新模块之前花时间去编写声明，你可以采用声明的简写形式以便能够快速使用它。
+
+```ts
+declare module "hot-new-module";
+```
+
+简写模块里所有导出的类型将是 `any`。
 
 ## 内置对象
 
@@ -529,3 +641,5 @@ interface Alarm {
 ## 参考（搬运）
 
 - [TypeScript 入门教程](https://github.com/xcatliu/typescript-tutorial)
+- [TypeScript 中文网](https://www.tslang.cn/docs/home.html)
+- [TypeScript 官网](https://www.typescriptlang.org/)
