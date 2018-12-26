@@ -11,11 +11,11 @@ _装饰器_ 是一种特殊类型的声明，它能够被附加到 `类声明`�
 
 定义装饰器的时候，参数 **最多有三个**，`target`、`name`、`descriptor`。
 
-`Decorators` 的本质是利用了 ES5 的 `Object.defineProperty` 属性，这三个参数其实是和 [`Object.defineProperty`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) 参数一致的，因此不能更改，详细分析请见 细说 ES7 JavaScript Decorators
+`Decorators` 的本质是利用了 ES5 的 `Object.defineProperty` 属性，这三个参数其实是和 [`Object.defineProperty`](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty) 参数一致的，因此不能更改。
 
-## 在 TS 中使用装饰器
+## 启用装饰器
 
-`tsconfig.json`
+`tsconfig.json` 的 `compilerOptions.experimentalDecorators` 设置为 `true`。
 
 ```json {4}
 {
@@ -35,7 +35,6 @@ _装饰器_ 是一种特殊类型的声明，它能够被附加到 `类声明`�
 ```ts {1}
 function isAnimal(target: any) {
   target.isAnimal = true;
-  return target;
 }
 @isAnimal
 class Cat {
@@ -51,11 +50,7 @@ console.log((Cat as any).isAnimal); // true
 
 ```ts
 function readonly(target: any, name: string, descriptor: PropertyDescriptor) {
-  console.log(target);
-  console.log(name);
-  console.log(descriptor);
   descriptor.writable = false;
-  return descriptor;
 }
 
 class Cat {
@@ -71,7 +66,7 @@ kitty.say = function() {
 }; // Error
 ```
 
-## 装饰类的编译
+## 装饰器的编译
 
 ### 编译前
 
@@ -109,13 +104,12 @@ var MyClass = /** @class */ (function() {
 
 function readonly(target, name, descriptor) {
   descriptor.writable = false;
-  return descriptor;
 }
 ```
 
 ### 精简整理一下
 
-```js {7}
+```js {7,10}
 var __decorate = function(decorators, target, key, desc) {
   var d;
   var r;
@@ -145,7 +139,7 @@ function annotation(target) {
 
 ### Babel 编译后
 
-```js
+```js {3}
 var _class;
 
 let MyClass = annotation((_class = class MyClass {})) || _class;
@@ -159,7 +153,7 @@ function annotation(target) {
 
 从上面可以看到对于类的装饰，其原理就是：
 
-```ts
+```ts {7}
 @decorator
 class A {}
 
@@ -203,13 +197,13 @@ f(): called
 ```
 
 ::: tip
-从 [这里](#精简整理一下) 可以看出，如果同一个方法有多个装饰器会 **由内向外执行**。
-类似于高阶函数里的 [`compose`](https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch5.html)。
+如果同一个方法有多个装饰器会 **由内向外执行**，从 [装饰器的编译结果](#精简整理一下) 就可以看出。
+这类似于高阶函数里的 [compose](https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch5.html)。
 :::
 
 ## 其他
 
-## 装饰模式 VS 适配器模式
+### 装饰模式 VS 适配器模式
 
 装饰模式和适配器模式都是 **包装模式** (Wrapper Pattern)，它们都是通过封装其他对象达到设计的目的的，但是它们的形态有很大区别。
 

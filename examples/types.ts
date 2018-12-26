@@ -1,11 +1,15 @@
-interface Person {
-  name: string;
-  age?: number;
-  [key: string]: any;
+function readonly(target: any, name: string, descriptor: PropertyDescriptor) {
+  descriptor.writable = false;
 }
 
-let tom: Person = {
-  name: "Tom",
-  age: 10,
-  sex: "F",
-};
+class Cat {
+  @readonly
+  say() {
+    console.log("meow ~");
+  }
+}
+
+const kitty = new Cat();
+kitty.say = function() {
+  console.log("woof !");
+}; // Error
