@@ -198,7 +198,6 @@ f(): called
 
 ::: tip
 如果同一个方法有多个装饰器会 **由内向外执行**，从 [装饰器的编译结果](#精简整理一下) 就可以看出。
-这类似于高阶函数里的 [compose](https://llh911001.gitbooks.io/mostly-adequate-guide-chinese/content/ch5.html)。
 :::
 
 ## 其他

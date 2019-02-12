@@ -7,22 +7,7 @@ next: false
 
 # 常见问题
 
-## `vue-property-decorator`
-
-[文档](https://github.com/kaorun343/vue-property-decorator)
-
-依赖 [`vue-class-component`](https://github.com/vuejs/vue-class-component)，内置 7 个装饰器和 1 个方法，允许使用 class-style component 语法书写 Vue 组件。
-
-- [`@Component`](https://github.com/vuejs/vue-class-component#example) (from vue-class-component)
-- [`@Prop`](https://github.com/kaorun343/vue-property-decorator#propoptions-propoptions--constructor--constructor---decorator)
-- [`@Watch`](https://github.com/kaorun343/vue-property-decorator#watchpath-string-options-watchoptions---decorator)
-- [`@Model`](https://github.com/kaorun343/vue-property-decorator#modelevent-string-options-propoptions--constructor--constructor---decorator)
-- [`@Emit`](https://github.com/kaorun343/vue-property-decorator#emitevent-string-decorator)
-- [`@Inject`](https://github.com/kaorun343/vue-property-decorator#providekey-string--symbol--injectoptions--from-injectkey-default-any---injectkey-decorator)
-- [`@Provide`](https://github.com/kaorun343/vue-property-decorator#providekey-string--symbol--injectoptions--from-injectkey-default-any---injectkey-decorator)
-- [`Mixins`](https://github.com/vuejs/vue-class-component#using-mixins) (from vue-class-component)
-
-## `shims-vue.d.ts`
+## `shims-vue.d.ts` 有什么用处
 
 ```ts
 declare module "*.vue" {
@@ -72,6 +57,68 @@ declare module "vue/types/vue" {
   interface Vue {
     $loading: any;
   }
+}
+```
+
+## 使用 Vue 构造函数上的静态方法
+
+```ts {7}
+import Vue from "vue";
+import { Component, Vue } from "vue-property-decorator";
+
+@Component
+export default class Home extends Vue {
+  private mounted() {
+    console.log(Vue.$customConstant);
+  }
+}
+```
+
+TypeScript 报错：`Property '$customConstant' does not exist ...`
+
+**解决办法：**
+
+添加 TS 类型声明文件 `src/global.d.ts`
+
+```ts
+import Vue from "vue";
+
+declare module "vue/types/vue" {
+  interface VueConstructor {
+    $customConstant: any;
+  }
+}
+```
+
+**参考：**
+
+- [增强类型以配合插件使用](https://cn.vuejs.org/v2/guide/typescript.html#%E5%A2%9E%E5%BC%BA%E7%B1%BB%E5%9E%8B%E4%BB%A5%E9%85%8D%E5%90%88%E6%8F%92%E4%BB%B6%E4%BD%BF%E7%94%A8)
+- [模块补充](https://www.typescriptlang.org/docs/handbook/declaration-merging.html#module-augmentation)
+
+## 自定义 `window` 全局变量
+
+`src/global.d.ts`
+
+```ts
+interface Window {
+  __oa__: any;
+}
+```
+
+## 使用 Node 全局变量 `process.env.*`
+
+1. 安装 Node 类型文件
+
+```bash
+npm i -D @types/node
+```
+
+2. 修改 `tsconfig.json`
+
+```js
+{
+  // ...
+  "types": ["node"]
 }
 ```
 
@@ -132,24 +179,6 @@ export default class Home extends Vue {
 
 相关阅读：[三斜指令](/typescript/types.html#手动添加声明文件)
 
-## 使用 Node 全局变量 `process.env.*`
-
-1. 安装 Node 类型文件
-
-```bash
-npm i -D @types/node
-```
-
-2. 修改 `tsconfig.json`
-
-```js
-{
-  // ...
-  "types": ["node"]
-  // ...
-}
-```
-
 ## 使用第三方库
 
 ### 有类型文件
@@ -192,16 +221,6 @@ declare module "gt-native-wap-bridge-sdk";
 
 [参考](/typescript/types.md#外部模块简写)
 
-## `window` 上添加全局变量
-
-`src/global.d.ts`
-
-```ts
-interface Window {
-  __oa__: any;
-}
-```
-
 ## 不要使用 `undefined` 作为 class property 的初始值
 
 ```ts
@@ -224,7 +243,7 @@ class MyComp extends Vue {
 
 [参考](https://github.com/vuejs/vue-class-component#undefined-will-not-be-reactive)
 
-## `*.vue` 文件的编译过程
+## vue 单文件组件的编译过程
 
 **JS:** `*.vue` --> `vue-loader` --> `js (html, css)` --> `babel-loader` --> `*.js`
 

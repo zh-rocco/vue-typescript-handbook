@@ -129,7 +129,7 @@ import { Component, Vue } from "vue-property-decorator";
 export default class Home extends Vue {}
 ```
 
-[深入理解 `Component` 装饰器](./component-deep.md)
+[深入理解 Component 装饰器](./component-deep.md)
 
 ## props
 
@@ -157,7 +157,7 @@ export default class Home extends Vue {
 [详细教程](https://github.com/kaorun343/vue-property-decorator#propoptions-propoptions--constructor--constructor---decorator)
 
 ::: tip
-props name 后添加 [`!` 修饰符](http://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html) 是为了防止 [Strict Class Initialization](http://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html) 警告。
+props name 后添加 `! 修饰符` 是为了防止 [Strict Class Initialization](http://www.typescriptlang.org/docs/handbook/release-notes/typescript-2-7.html#strict-class-initialization) 警告。
 :::
 
 ## data
