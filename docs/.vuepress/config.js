@@ -14,6 +14,7 @@ module.exports = {
         items: [
           { text: "初始化", link: "/vue/init.html" },
           { text: "类风格的组件", link: "/vue/use.html" },
+          { text: "Vuex", link: "/vue/vuex.html" },
           { text: "常见问题", link: "/vue/faq.html" },
           // ...
         ],

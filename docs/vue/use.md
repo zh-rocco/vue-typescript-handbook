@@ -2,7 +2,7 @@
 sidebar: auto
 sidebarDepth: 3
 prev: ./init.md
-next: ./faq.md
+next: ./vuex.md
 ---
 
 # 类风格的组件
