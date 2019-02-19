@@ -112,3 +112,8 @@ export default new Vuex.Store({
   mutations,
 });
 ```
+
+## 更好的写法
+
+- [Vue2.5+ Typescript 引入全面指南 - Vuex篇](https://segmentfault.com/a/1190000011864013)
+
