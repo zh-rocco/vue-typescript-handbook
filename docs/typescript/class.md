@@ -45,28 +45,33 @@ console.log(a.name); // Jack
 
 TypeScript 可以使用三种访问修饰符（Access Modifiers），分别是 `public`、`private` 和 `protected`。
 
-`public` 修饰的属性或方法是公有的，可以在任何地方被访问到，默认所有的属性和方法都是 `public` 的
-`private` 修饰的属性或方法是私有的，不能在声明它的类的外部访问
-`protected` 修饰的属性或方法是受保护的，它和 `private` 类似，区别是它在子类中也是允许被访问的
+- `public` 修饰的属性或方法是公有的，可以在任何地方被访问到，默认所有的属性和方法都是 `public`。
+- `private` 修饰的属性或方法是私有的，不能在声明它的类的外部访问。
+- `protected` 修饰的属性或方法是受保护的，它和 `private` 类似，区别是它在子类中是允许被访问的。
 
 ```ts
 class Animal {
   public name;
   private age;
-  public constructor({ name, age }) {
+  protected sex;
+  public constructor({ name, age, sex}) {
     this.name = name;
     this.age = age;
+    this.sex = sex;
   }
 }
 
-let a = new Animal({ name: "Tom", age: "3" });
+let a = new Animal({ name: "Tom", age: "3", sex: "male" });
 console.log(a.name); // Tom
 console.log(a.age); // Error
+console.log(a.sex); // Error
 
 class Cat extends Animal {
-  constructor({ name, age }) {
-    super({ name, age });
+  constructor({ name, age, sex }) {
+    super({ name, age, sex });
+    console.log(this.name);
     console.log(this.age); // Error
+    console.log(this.sex);
   }
 }
 ```

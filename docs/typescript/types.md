@@ -189,7 +189,9 @@ interface NumberArray {
 let fibonacci: NumberArray = [1, 1, 2, 3, 5];
 ```
 
-接口 `NumberArray` 实际上是描述了一种*键为 `number` 、值为 `number` 类型（也可以为其他类型）的对象*，这种对象刚好等价于元素为 `number` 的数组这种类型。
+::: tip
+接口 `NumberArray` 实际上是描述了一种*键为 `number` 类型、值为 `number` 类型（也可以为其他类型）的对象*，这种对象在类型描述上刚好等价于元素为 `number` 类型的数组。
+:::
 
 ## 函数的类型
 
