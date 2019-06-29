@@ -1,5 +1,7 @@
 # Vue TypeScript Handbook
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/zh-rocco/vue-typescript-handbook.svg)](https://greenkeeper.io/)
+
 Let's develop Vue app with TypeScript.
 
 [文档](https://zh-rocco.github.io/vue-typescript-handbook/)
