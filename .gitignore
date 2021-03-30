@@ -15,7 +15,7 @@ dist
 *.sln
 
 # lock files
-package-lock.json
+yarn.lock
 
 # vuepress
 .vuepress/dist
